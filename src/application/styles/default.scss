@@ -1,0 +1,36 @@
+$font-color-std: #666666;
+$font-color-dark: #222222;
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+content {
+  display: block;
+  padding: 8px;
+
+  h1, h2, h3, h4, h5, h6, p, div, span {
+    color: $font-color-std;
+  }
+}
+
+.title {
+  display: block;
+  width: 100%;
+  .title__icon {
+    display: inline-block;
+    height: 64px;
+    width: 64px;
+    background: url('./../images/icon.png');
+    background-size: 64px;
+  }
+  .title__text {
+    display: inline-block;
+    font-size: 52px;
+    color: $font-color-dark;
+    margin: 4px 0 0 16px;
+    vertical-align: top;
+  }
+}
