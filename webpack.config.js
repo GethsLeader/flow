@@ -152,6 +152,7 @@ const config = {
             name: 'vendor'
         }),
         new webpack.DefinePlugin({
+            'process.env.NODE_ENV': isProduction ? '"production"' : '"development"',
             application: {
                 isProduction: JSON.stringify(isProduction),
                 isDevelopment: JSON.stringify(isDevelopment),

@@ -17,8 +17,14 @@ TODO
 8) ~~Webpack development server;~~
 9) ~~HMR (for code and for styles);~~
 10) ~~Vue framework apply~~;
-11) Unit testing;
-12) Coverage.
+11) Alerts frontend component;
+12) Authentication frontend component;
+13) Simple application backend;
+14) Simple application routing;
+15) Application authentication and authorization logic;
+16) ...
+00) Unit testing;
+00) Coverage.
 
 
 TECHNOLOGY STACK
