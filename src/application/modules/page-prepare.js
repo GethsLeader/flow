@@ -24,7 +24,6 @@ export class PagePrepare {
         link.rel = 'shortcut icon';
         link.href = this.iconPNG;
         document.getElementsByTagName('head')[0].appendChild(link);
-        logger.debug('...done.');
         return Promise.resolve();
     }
 }

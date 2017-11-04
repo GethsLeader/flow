@@ -1,0 +1,89 @@
+$alert-background-default: #aaaaaa;
+$alert-background-info: #4774aa;
+$alert-background-success: #47aa74;
+$alert-background-warning: #aaaa74;
+$alert-background-error: #aa4747;
+$alert-border-default: #9b9b9b;
+$alert-border-info: #43699b;
+$alert-border-success: #459b67;
+$alert-border-warning: #9b9b66;
+$alert-border-error: #9b4646;
+$alert-font-color: #ffffff;
+$close-button-color-default: #222222;
+$close-button-color-active: #cccccc;
+
+.alerts {
+  display: block;
+  position: absolute;
+  width: 400px;
+  top: 0;
+  right: 0;
+  .alert {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.5);
+    h1 {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    p {
+      font-size: 16px;
+    }
+    button.close {
+      display: inline-block;
+      position: absolute;
+      right: 8px;
+      margin-top: -4px;
+      font-weight: bold;
+      font-size: 24px;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      text-shadow: 3px 3px rgba(0, 0, 0, 0.5);
+      transition: transform ease 0.6s;
+      color: $close-button-color-default;
+      &:hover {
+        transform: rotate(360deg);
+        color: $close-button-color-active;
+      }
+    }
+    &.error {
+      h1, h2, h3, h4, h5, h6, p, div, span {
+        color: $alert-font-color;
+      }
+      background: $alert-background-error;
+      border: 1px solid $alert-border-error;
+    }
+    &.warning {
+      h1, h2, h3, h4, h5, h6, p, div, span {
+        color: $alert-font-color;
+      }
+      background: $alert-background-warning;
+      border: 1px solid $alert-border-warning;
+    }
+    &.success {
+      h1, h2, h3, h4, h5, h6, p, div, span {
+        color: $alert-font-color;
+      }
+      background: $alert-background-success;
+      border: 1px solid $alert-border-success;
+    }
+    &.info {
+      h1, h2, h3, h4, h5, h6, p, div, span {
+        color: $alert-font-color;
+      }
+      background: $alert-background-info;
+      border: 1px solid $alert-border-info;
+    }
+    &.default {
+      h1, h2, h3, h4, h5, h6, p, div, span {
+        color: $alert-font-color;
+      }
+      background: $alert-background-default;
+      border: 1px solid $alert-border-default;
+    }
+  }
+  z-index: 102;
+}

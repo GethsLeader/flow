@@ -1,7 +1,10 @@
 /**
- * Class to divide application logs to few different levels with own visibility levels
+ * Logger service class
  */
 export class Logger {
+    /**
+     * @param level {string} Minimal level for logging. Default - log
+     */
     constructor(level) {
         this._levels = ['debug', 'info', 'log', 'warn', 'error'];
         this.level = level || 'log';
@@ -53,7 +56,7 @@ export class Logger {
 }
 
 /**
- * Singleton instance of Logger, to work with it in whole application
+ * Logger service instance
  * @type {Logger}
  */
 export const logger = new Logger(application.isDevelopment ? 'debug' : 'log');

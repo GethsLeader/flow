@@ -1,0 +1,13 @@
+<div class="alerts">
+    <div v-for="item in alerts.list" :class="['alert',
+            item.type === AlertTypes.ERROR ? 'error'
+            : item.type === AlertTypes.WARNING ? 'warning'
+            : item.type === AlertTypes.SUCCESS ? 'success'
+            : item.type === AlertTypes.INFO ? 'info'
+            : 'default'
+        ]">
+        <button @click="alerts.remove(item.id)" type="button" class="close">&times;</button>
+        <h1 v-if="item.title">{{item.title}}</h1>
+        <p v-if="item.message">{{item.message}}</p>
+    </div>
+</div>

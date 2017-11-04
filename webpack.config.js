@@ -103,6 +103,13 @@ const config = {
                 })
             },
             {
+                test: /\.(html)$/i,
+                use: {
+                    loader: 'html-loader',
+                    options: {}
+                }
+            },
+            {
                 test: /\.js$/i,
                 exclude: /node_modules/, // should not babelify external dependencies
                 use: {
@@ -135,7 +142,6 @@ const config = {
         ]
     },
     plugins: [
-        new CleanWebpackPlugin(distPath),
         new HtmlWebpackPlugin({
             template: path.resolve(srcPath, 'application/index.ejs'),
             title: `${packageJSON.name.charAt(0).toUpperCase() + packageJSON.name.slice(1)}${packageJSON.version ? ' ' + packageJSON.version : ''}`,
@@ -173,6 +179,10 @@ const config = {
         }
     }
 };
+
+if (!isDevServer) { // no need to clean dist directory on simple build call
+    config.plugins.unshift(new CleanWebpackPlugin(distPath));
+}
 
 if (isDevelopment && isDevServer) { // in this case here should be HMR support
     config.entry.hmr = 'webpack-hot-middleware/client';
