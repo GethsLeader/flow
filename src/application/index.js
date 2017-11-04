@@ -1,36 +1,36 @@
 import 'babel-polyfill';
 import 'application/styles/default.scss';
+import {logger} from 'application/modules/logger';
 
-import iconSVG from 'application/images/icon.svg';
-import iconPNG from 'application/images/icon.png';
-import textIcon from 'application/data/text-icon.txt';
+// page decorator
+import {PagePrepare} from 'application/modules/page-prepare';
 
-import {applySpecialClick} from 'application/modules/clicker'
-import {PagePreparator} from 'application/modules/page-preparator';
+// root of application
+import {root} from 'application/modules/root';
 
-const pp = new PagePreparator(iconPNG, iconSVG);
+logger.debug(`[Application] started in "${application.isDevelopment ? 'development' : application.isProduction ? 'production' : 'unknown'}" mode...`);
+logger.info(`
+Application:
+  name: ${application.info.name}
+  version: ${application.info.version}
+  author: ${application.info.author}
+  description: ${application.info.description}
+  license: ${application.info.license}
+`);
 
-let start = () => {
-    pp.init();
-    applySpecialClick();
-    return Promise.resolve('Let\'s start, I guess?');
-};
+// page prepare instance for init on application start
+const pagePrepare = new PagePrepare();
 
+// application start function implementation, for more flexible async methods call
+async function start() {
+    await pagePrepare.init();
+}
+
+// application start
 start()
-    .then((startText) => {
-        console.log(startText);
-        console.log('...');
-        console.log(textIcon);
+    .then(() => {
+        logger.debug('[Application] started.');
     })
     .catch((error) => {
-        console.error(error);
+        logger.error(error);
     });
-
-/**
- * HMR
- */
-if (module.hot) {
-    module.hot.accept('application/modules/clicker', () => {
-        applySpecialClick();
-    });
-}

@@ -150,10 +150,26 @@ const config = {
         extractSass,
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor'
+        }),
+        new webpack.DefinePlugin({
+            application: {
+                isProduction: JSON.stringify(isProduction),
+                isDevelopment: JSON.stringify(isDevelopment),
+                info: {
+                    name: JSON.stringify(packageJSON.name),
+                    version: JSON.stringify(packageJSON.version),
+                    author: JSON.stringify(packageJSON.author),
+                    description: JSON.stringify(packageJSON.description),
+                    license: JSON.stringify(packageJSON.license)
+                }
+            }
         })
     ],
     resolve: {
-        modules: ['node_modules', srcPath] // webpack should to resolve files for import there
+        modules: ['node_modules', srcPath], // webpack should to resolve files for import there
+        alias: { // vue support
+            'vue$': 'vue/dist/vue.esm.js'
+        }
     }
 };
 

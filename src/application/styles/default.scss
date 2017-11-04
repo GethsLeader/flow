@@ -1,5 +1,6 @@
 $font-color-std: #666666;
 $font-color-dark: #222222;
+$border-color-light: #887777;
 
 html,
 body {
@@ -19,6 +20,9 @@ content {
 .title {
   display: block;
   width: 100%;
+  padding-bottom: 16px;
+  border-bottom: 1px solid $border-color-light;
+  margin-bottom: 16px;
   .title__icon {
     display: inline-block;
     height: 64px;

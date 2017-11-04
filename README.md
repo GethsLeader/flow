@@ -16,7 +16,7 @@ TODO
 7) ~~Minimization + Tree Shaking;~~
 8) ~~Webpack development server;~~
 9) ~~HMR (for code and for styles);~~
-10) Vue framework apply;
+10) ~~Vue framework apply~~;
 11) Unit testing;
 12) Coverage.
 
