@@ -8,6 +8,19 @@ export class Utils {
         }
         return result;
     }
+
+    static response2Error(responseOrError) {
+        if (responseOrError instanceof Error || (responseOrError.name && responseOrError.message)) {
+            return responseOrError;
+        }
+        if (responseOrError.body && responseOrError.headers) {
+            const error = new Error(responseOrError.bodyText);
+            error.message = (responseOrError.statusText && responseOrError.status ? `[${responseOrError.status}] ${responseOrError.statusText}`
+                : responseOrError.statusText ? responseOrError.statusText
+                    : 'ERROR') + `\n${error.message}`;
+            return error;
+        }
+    }
 }
 
 export class Events {

@@ -1,5 +1,8 @@
 {
   "alerts": {
     "defaultDisappearDelay": 7500
+  },
+  "auth": {
+    "url": "/auth"
   }
 }

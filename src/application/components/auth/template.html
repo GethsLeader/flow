@@ -1,0 +1,12 @@
+<div class="auth">
+    <form @submit.prevent="auth.loginForm.login()" class="mini-login-form">
+        <div class="fields">
+            <input v-model="auth.loginForm.username" type="text" placeholder="Username">
+            <input v-model="auth.loginForm.password" type="password" placeholder="Password">
+        </div>
+        <div class="buttons">
+            <button type="submit">Login</button>
+            <button type="button" disabled>Register</button>
+        </div>
+    </form>
+</div>

@@ -5,14 +5,13 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-<content>
+<content id="application">
     <div class="title">
         <div class="title__icon"></div>
         <h1 class="title__text"><%= htmlWebpackPlugin.options.title %></h1>
+        <auth></auth>
     </div>
-    <div id="application">
-        <alerts></alerts>
-    </div>
+    <alerts></alerts>
 </content>
 </body>
 </html>

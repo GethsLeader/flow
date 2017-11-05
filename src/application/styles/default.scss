@@ -1,6 +1,19 @@
 $font-color-std: #666666;
 $font-color-dark: #222222;
 $border-color-light: #887777;
+$border-color-dark: #960d13;
+$background-color-dark: #1f0000;
+
+$button-background-color: #ba0001;
+$button-border-color: #880001;
+$button-font-color: #ffb2b5;
+$button-hover-background: #ff0001;
+$button-hover-font-color: #ffefeb;
+$button-active-background: #4b0000;
+$button-active-font-color: #615b59;
+$button-disabled-background: #896c72;
+$button-disabled-border-color: #8b4646;
+$button-disabled-font-color: #7e000d;
 
 html,
 body {
@@ -14,6 +27,38 @@ content {
 
   h1, h2, h3, h4, h5, h6, p, div, span {
     color: $font-color-std;
+  }
+}
+
+input[type="text"], input[type="password"] {
+  color: $font-color-std;
+  border: 1px solid $border-color-dark;
+  background: $background-color-dark;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+button {
+  border: 1px solid $button-border-color;
+  background: $button-background-color;
+  color: $button-font-color;
+  border-radius: 4px;
+  padding: 4px;
+  &:hover {
+    background: $button-hover-background;
+    color: $button-active-font-color;
+    cursor: pointer;
+  }
+  &:active {
+    background: $button-active-background;
+    color: $button-active-font-color;
+    cursor: pointer;
+  }
+  &:disabled {
+    cursor: not-allowed;
+    background: $button-disabled-background;
+    border-color: $button-disabled-border-color;
+    color: $button-disabled-font-color;
   }
 }
 
@@ -40,3 +85,4 @@ content {
 }
 
 @import 'alerts';
+@import 'auth';
