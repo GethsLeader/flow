@@ -19,7 +19,7 @@ TODO
 10) ~~Vue framework apply;~~
 11) ~~Alerts frontend component;~~
 12) ~~Authentication frontend component;~~
-13) Simple application backend;
+13) Simple application backend (__WIP__);
 14) Simple application routing;
 15) Application authentication and authorization logic;
 16) ...

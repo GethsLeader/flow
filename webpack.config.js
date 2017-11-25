@@ -14,12 +14,12 @@ const UglifyJSWebpackPlugin = require('uglifyjs-webpack-plugin');
  * Destination path for bundled sources (distributable)
  * @type {string}
  */
-const distPath = path.resolve(__dirname, 'dist');
+const distPath = path.resolve(__dirname, './frontend/dist');
 /**
  * Sources path
  * @type {string}
  */
-const srcPath = path.resolve(__dirname, 'src');
+const srcPath = path.resolve(__dirname, './frontend/src');
 
 /**
  * package.json file of project in JSON format

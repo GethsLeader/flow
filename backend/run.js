@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+
+// IMPORTS
+const debug = require('debug')('app');
+
+// CONFIGURATION
+debug('Process launched in:', process.cwd());
+if (process.cwd() !== __dirname) {
+    debug('Changing working directory to:', __dirname);
+    process.chdir(__dirname);
+}
+
+// CONFIGURATION
+const Configurator = require('./modules/configurator');
+const configurator = new Configurator();
+
+// APPLICATION
+const Application = require('./modules/application');
+const application = new Application(configurator);
+
+debug('Starting...');
+application.start()
+    .then(() => {
+        debug('...started!');
+        application.info(`Application "${application.package.name}" (${application.package.version}) successful launched!`);
+    })
+    .catch((error) => {
+        console.error(error);
+    });

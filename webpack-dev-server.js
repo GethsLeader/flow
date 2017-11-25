@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 
 // IMPORTS
-
-const path = require('path');
 const http = require('http');
 const express = require('express');
 const webpack = require('webpack');
@@ -10,7 +8,6 @@ const WebpackDevMiddleware = require('webpack-dev-middleware');
 const WebpackHotMiddleware = require('webpack-hot-middleware');
 
 // CONFIGURATION
-
 /**
  * Application dev server port
  * @type {number}
@@ -42,7 +39,6 @@ const application = express();
 const compiler = webpack(config);
 
 // MIDDLEWARE
-
 /**
  * Middleware instance to handle all dev server workflow
  * @type {function}
@@ -99,7 +95,6 @@ function errorsHandler(err, req, res, next) {
 }
 
 // SERVER
-
 if (process.env.NODE_ENV === 'production') { // lets avoid case, when someone will start it in production
     throw new Error('Cannot use webpack-dev-server in production!');
 }
