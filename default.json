@@ -5,5 +5,17 @@
       "port": 3000
     },
     "https": null
+  },
+  "security": {
+    "poweredBy": "ASP.NET ARR/2.5 ASP.NET",
+    "frameguard": "sameorigin",
+    "xssFilter": true
+  },
+  "logger": {
+    "path": "../logs",
+    "rotation": {
+      "interval": "1d",
+      "size": "5M"
+    }
   }
 }

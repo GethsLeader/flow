@@ -7,15 +7,23 @@ const ExpressRequest = express.request;
 const ExpressResponse = express.response;
 
 const Logger = require('./logger');
+const Security = require('./security');
+const Routes = require('./routes');
+const Servers = require('./servers');
 
 // MODULES
 class Modules {
-    constructor() {
-        this.logger = null;
+    constructor(application) {
+        debug('Modules creation...');
+        this.logger = new Logger(application);
+        this.security = new Security(application);
+        this.routes = new Routes(application);
+        this.servers = new Servers(application);
+        debug('...modules created.');
     }
 }
 
-// APPLICATION
+// IMPLEMENTATION
 class Application extends EventEmitter {
     constructor(configurator) {
         if (!configurator) {
@@ -41,10 +49,7 @@ class Application extends EventEmitter {
         debug('Application initialization...');
         this.init();
         debug('...application initialized.');
-        debug('Modules creation...');
-        this.modules = new Modules();
-        this.logger = new Logger(this);
-        debug('...modules created.');
+        this.modules = new Modules(this);
     }
 
     requestsListener(req, res, next) {
@@ -52,7 +57,16 @@ class Application extends EventEmitter {
     }
 
     start() {
-        return this.logger.init()
+        return this.modules.logger.init()
+            .then(() => {
+                return this.modules.security.init();
+            })
+            .then(() => {
+                return this.modules.routes.init();
+            })
+            .then(() => {
+                return this.modules.servers.init();
+            })
             .catch((error) => {
                 throw error;
             });

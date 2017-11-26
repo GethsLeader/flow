@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-// CONFIGURATOR
+// IMPLEMENTATION
 class Configurator {
     constructor() {
         this.appPath = process.cwd();

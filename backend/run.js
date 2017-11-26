@@ -22,8 +22,8 @@ debug('Starting...');
 application.start()
     .then(() => {
         debug('...started!');
-        application.info(`Application "${application.package.name}" (${application.package.version}) successful launched!`);
+        application.log(`Application "${application.package.name}" (${application.package.version}) successful launched!`);
     })
     .catch((error) => {
-        console.error(error);
+        application.error(error);
     });

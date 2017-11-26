@@ -172,8 +172,6 @@ class Logger extends Module {
                 logger = this.channels.errors;
                 break;
             case 'log':
-                firstArgument = 'log';
-                break;
             case 'info':
             default:
                 firstArgument = 'info';
