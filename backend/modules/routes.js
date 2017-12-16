@@ -13,9 +13,39 @@ class Routes extends Module {
     init() {
         debug('Module initialization...');
         this.application.use('/', require('../routes/index'));
+        this._webpackDevHandlers();
         this._errorsHandlers();
         debug('...module initialized.');
         return Promise.resolve(this);
+    }
+
+    _webpackDevHandlers() {
+        if (this.application.get('env') !== 'production') {
+            // webpack imports
+            const webpack = require('webpack');
+            const WebpackDevMiddleware = require('webpack-dev-middleware');
+            const WebpackHotMiddleware = require('webpack-hot-middleware');
+            // load and compile webpack configuration from project root
+            const webpackConfig = require('../../webpack.config');
+            const webpackCompiler = webpack(webpackConfig);
+            // middleware apply
+            const webpackDevMiddleware = WebpackDevMiddleware(webpackCompiler, {
+                publicPath: '/',
+                contentBase: null, // where from should to serve all other application static files
+                staticOptions: {}, // additional options to serve static files right
+                historyApiFallback: null, // rewrite rules, in other words what serve on each request, will serve index.html on true
+                compress: true, // gzip compression
+                inline: true, // to prepare live scripts reloading
+                hot: true, // to hot modules replacement feature
+                watchOptions: {}, // options to handle file system changes notifications right
+                stats: { // option to control information output about bundle
+                    colors: true,
+                }
+            });
+            const webpackHotMiddleware = WebpackHotMiddleware(webpackCompiler);
+            this.application.use(webpackDevMiddleware);
+            this.application.use(webpackHotMiddleware);
+        }
     }
 
     _errorsHandlers() {
@@ -28,7 +58,7 @@ class Routes extends Module {
 
         // development error handler
         // will print stacktrace
-        if (this.application.get('env') === 'development') {
+        if (this.application.get('env') !== 'production') {
             this.application.use((err, req, res, next) => {
                 if (!err) {
                     err = new Error('ERROR_NO_MORE_LAYERS');

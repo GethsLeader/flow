@@ -51,7 +51,7 @@ class Logger extends Module {
     init() {
         debug('Module initialization...');
         this.channels = new Channels();
-        if (this.application.get('env') === 'development') {
+        if (this.application.get('env') !== 'production') {
             this.application.use(morgan('dev'));
             this.channels.console = new (winston.Logger)({
                 level: 'info',
