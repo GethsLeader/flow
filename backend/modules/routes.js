@@ -94,7 +94,7 @@ class Routes extends Module {
 
         // production error handler
         // no stacktrace leaked to user
-        this.application.use(function (err, req, res, next) {
+        this.application.use((err, req, res, next) => {
             if (!err) {
                 err = new Error('ERROR_NO_MORE_LAYERS');
             }
