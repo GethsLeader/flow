@@ -19,39 +19,33 @@ class LoginForm {
         this.password = '';
     }
 
-    login() {
+    async login() {
         logger.debug(`[Auth] login started for "${this.username}"...`);
-        Promise.resolve()
-            .then(() => {
-                if (!this.username.trim()) {
-                    throw new Error('ERROR_EMPTY_USERNAME');
-                }
-                if (!this.password) {
-                    throw new Error('ERROR_EMPTY_PASSWORD');
-                }
-                return Vue.http.post(this.url, {
-                    username: this.username.trim(),
-                    password: this.password
-                });
-            })
-            .then((res) => {
-                logger.debug(`[Auth] user "${res.body.username}" login was successful!`);
-                this.username = '';
-                this.auth.user = res.body;
-                alerts.add(AlertTypes.SUCCESS, 'Successful login!', 'Auth');
-            })
-            .catch((res) => {
-                const error = Utils.response2Error(res);
-                logger.error(error);
-                if (error.message.indexOf('ERROR_') !== 0) {
-                    error.message = 'ERROR_UNKNOWN';
-                }
-                // TODO: [3] should to process errors here more nicely xD
-                alerts.add(AlertTypes.ERROR, error.message, 'Auth');
-            })
-            .then(() => {
-                this.password = '';
+        if (!this.username.trim()) {
+            throw new Error('ERROR_EMPTY_USERNAME');
+        }
+        if (!this.password) {
+            throw new Error('ERROR_EMPTY_PASSWORD');
+        }
+        try {
+            let res = await Vue.http.post(this.url, {
+                username: this.username.trim(),
+                password: this.password
             });
+            logger.debug(`[Auth] user "${res.body.username}" login was successful!`);
+            this.username = '';
+            this.auth.user = res.body;
+            alerts.add(AlertTypes.SUCCESS, 'Successful login!', 'Auth');
+        } catch (res) {
+            const error = Utils.response2Error(res);
+            logger.error(error);
+            if (error.message.indexOf('ERROR_') !== 0) {
+                error.message = 'ERROR_UNKNOWN';
+            }
+            // TODO: [3] should to process errors here more nicely xD
+            alerts.add(AlertTypes.ERROR, error.message, 'Auth');
+        }
+        this.password = '';
     }
 }
 

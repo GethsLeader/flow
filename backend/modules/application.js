@@ -56,20 +56,11 @@ class Application extends EventEmitter {
         this.application.handle(req, res, next);
     }
 
-    start() {
-        return this.modules.logger.init()
-            .then(() => {
-                return this.modules.security.init();
-            })
-            .then(() => {
-                return this.modules.routes.init();
-            })
-            .then(() => {
-                return this.modules.servers.init();
-            })
-            .catch((error) => {
-                throw error;
-            });
+    async start() {
+        await this.modules.logger.init();
+        await this.modules.security.init();
+        await this.modules.routes.init();
+        await this.modules.servers.init();
     }
 
     log() {

@@ -21,7 +21,7 @@ class Security extends Module {
         debug('...module created.');
     }
 
-    init() {
+    async init() {
         debug('Module initialization...');
         this.poweredBy = this.config['poweredBy'] || 'Django/1.2.1 SVN-13336';
         this.frameguard = this.config['frameguard'] ? this.config['frameguard']
@@ -37,10 +37,10 @@ class Security extends Module {
             xssFilter: this.xssFilter
         }));
         debug('...module initialized.');
-        return Promise.resolve(this);
+        return this;
     }
 
-    _loadData(path) {
+    async _loadData(path) {
         return new Promise((resolve, reject) => {
             fs.access(path, fs.constants.R_OK, (err) => {
                 if (err) {
@@ -56,35 +56,19 @@ class Security extends Module {
         });
     }
 
-    getSecurityCerts(certsFiles) {
+    async getSecurityCerts(certsFiles) {
         debug('Trying to get security certs...');
-        let certsData = new CertsData();
-        let loadingFiles = [];
+        let loadingFiles = [],
+            certsData = new CertsData();
         if (certsFiles.key) {
-            loadingFiles.push(
-                this._loadData(certsFiles.key)
-                    .then((data) => {
-                        certsData.key = data;
-                        debug('    * certs key loaded;');
-                        return certsData.key;
-                    })
-                    .catch((error) => {
-                        throw error;
-                    })
-            );
+            certsData.key = await this._loadData(certsFiles.key);
+            loadingFiles.push(certsData.key);
+            debug('    * certs key loaded;');
         }
         if (certsFiles.cert) {
-            loadingFiles.push(
-                this._loadData(certsFiles.cert)
-                    .then((data) => {
-                        certsData.cert = data;
-                        debug('    * certs itself loaded;');
-                        return certsData.cert;
-                    })
-                    .catch((error) => {
-                        throw error;
-                    })
-            );
+            certsData.cert = await this._loadData(certsFiles.cert);
+            loadingFiles.push(certsData.cert);
+            debug('    * certs itself loaded;');
         }
         if (certsFiles.ca) {
             if (certsFiles.ca && typeof certsFiles.ca === 'string') {
@@ -98,36 +82,23 @@ class Security extends Module {
                         this._loadData(certsFiles.ca[i])
                             .then((data) => {
                                 certsData.ca.push(data);
-                                return certsData.ca[certsData.ca.length - 1];
+                                return data;
                             })
                             .catch((error) => {
                                 throw error;
                             })
                     );
                 }
-                loadingFiles.push(
-                    Promise.all(loadingCAFiles)
-                        .then(() => {
-                            debug('    * certs ca loaded;');
-                        })
-                        .catch((error) => {
-                            throw error;
-                        })
-                );
+                loadingFiles = loadingFiles.concat(await Promise.all(loadingCAFiles));
+                debug('    * certs ca loaded;');
             }
         }
         if (loadingFiles.length > 0) {
-            return Promise.all(loadingFiles)
-                .then(() => {
-                    debug('...security certs loading finished.');
-                    return certsData;
-                })
-                .catch((error) => {
-                    throw error;
-                });
+            debug('...security certs loading finished.');
+        } else {
+            debug('...security certs loading skipped.');
         }
-        debug('...security certs loading skipped.');
-        return Promise.resolve(certsData);
+        return certsData;
     }
 }
 

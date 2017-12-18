@@ -10,13 +10,13 @@ class Routes extends Module {
         debug('...module created.');
     }
 
-    init() {
+    async init() {
         debug('Module initialization...');
         this.application.use('/', require('../routes/index'));
         this._webpackDevHandlers();
         this._errorsHandlers();
         debug('...module initialized.');
-        return Promise.resolve(this);
+        return this;
     }
 
     _webpackDevHandlers() {

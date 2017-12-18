@@ -10,8 +10,8 @@ class Module {
         this.application = application;
     }
 
-    init() {
-        return Promise.reject(new Error(`Cannot call abstract method of ${this.constructor} module! Please, override it with own implementation.`));
+    async init() {
+        throw new Error(`Cannot call abstract method of ${this.constructor} module! Please, override it with own implementation.`);
     }
 }
 

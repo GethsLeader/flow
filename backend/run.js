@@ -18,12 +18,13 @@ const configurator = new Configurator();
 const Application = require('./modules/application');
 const application = new Application(configurator);
 
-debug('Starting...');
-application.start()
-    .then(() => {
+(async () => {
+    debug('Starting...');
+    try {
+        await application.start();
         debug('...started!');
         application.log(`Application "${application.package.name}" (${application.package.version}) successful launched!`);
-    })
-    .catch((error) => {
+    } catch (error) {
         application.error(error);
-    });
+    }
+})();

@@ -48,7 +48,7 @@ class Logger extends Module {
         debug('...module created.');
     }
 
-    init() {
+    async init() {
         debug('Module initialization...');
         this.channels = new Channels();
         if (this.application.get('env') !== 'production') {
@@ -159,7 +159,7 @@ class Logger extends Module {
         this.application.warn = this.log.bind(this, 'warn');
         this.application.error = this.log.bind(this, 'error');
         debug('...module initialized.');
-        return Promise.resolve(this);
+        return this;
     }
 
     log(firstArgument, ...args) {

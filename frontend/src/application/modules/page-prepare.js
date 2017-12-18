@@ -17,13 +17,13 @@ export class PagePrepare {
         logger.log(this.iconText);
     }
 
-    init() {
+    async init() {
         logger.debug('Setting up icon to page...');
         let link = document.querySelector('link[rel*="icon"]') || document.createElement('link');
         link.type = 'image/x-icon';
         link.rel = 'shortcut icon';
         link.href = this.iconPNG;
         document.getElementsByTagName('head')[0].appendChild(link);
-        return Promise.resolve();
+        return this;
     }
 }
