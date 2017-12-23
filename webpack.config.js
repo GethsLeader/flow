@@ -8,6 +8,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJSWebpackPlugin = require('uglifyjs-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // CONSTANTS
 /**
@@ -43,8 +44,8 @@ const isDevelopment = process.env.NODE_ENV === 'development' || !isProduction;
  * Variable to detect start webpack configuration via webpack dev server
  * @type {boolean}
  */
-const isDevServer = process.argv.find((item) => {
-    return item.includes('webpack-dev-server');
+const isDevOrAppServer = process.argv.find((item) => {
+    return item.includes('webpack-dev-server') || item.includes('run');
 });
 
 // CONFIGURATION
@@ -63,9 +64,6 @@ const extractSass = new ExtractTextPlugin({
  */
 const config = {
     entry: {
-        vendor: [
-            'babel-polyfill'
-        ],
         application: path.resolve(srcPath, 'application/index.js') // main entry point, core of frontend application
     },
     output: {
@@ -128,7 +126,7 @@ const config = {
                 }
             },
             {
-                test: /\.(svg|jpe?g|png|gif)$/i,
+                test: /\.(svg|jpe?g|png|gif|ico)$/i,
                 use: [
                     {
                         loader: 'file-loader',
@@ -138,24 +136,28 @@ const config = {
                         }
                     }
                 ]
+            },
+            {
+                test: /\.(ttf|eot|woff|woff2)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[hash].[ext]',
+                            outputPath: 'fonts/'
+                        }
+                    }
+                ]
             }
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: path.resolve(srcPath, 'application/index.ejs'),
-            title: `${packageJSON.name.charAt(0).toUpperCase() + packageJSON.name.slice(1)}${packageJSON.version ? ' ' + packageJSON.version : ''}`,
-            minify: isDevelopment ? false : { // html minify in production
-                collapseInlineTagWhitespace: true,
-                collapseWhitespace: true,
-                removeAttributeQuotes: true,
-                removeComments: true,
-                useShortDoctype: true
-            }
-        }),
         extractSass,
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor'
+            name: 'vendor',
+            minChunks: (module) => {
+                return module.context && module.context.indexOf('node_modules') !== -1;
+            }
         }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': isProduction ? '"production"' : '"development"',
@@ -180,20 +182,42 @@ const config = {
     }
 };
 
-if (!isDevServer) { // no need to clean dist directory on simple build call
+let webpackHtmlPluginOptions = {
+    template: path.resolve(srcPath, 'application/index.ejs'),
+    title: `${packageJSON.name.charAt(0).toUpperCase() + packageJSON.name.slice(1)}${packageJSON.version ? ' ' + packageJSON.version : ''}`,
+    chunks: ['vendor', 'application'],
+    filename: 'index.html',
+    minify: false
+};
+
+if (!isDevOrAppServer) { // no need to clean dist directory on simple build call
     config.plugins.unshift(new CleanWebpackPlugin(distPath));
 }
 
-if (isDevelopment && isDevServer) { // in this case here should be HMR support
+if (isDevelopment && isDevOrAppServer) { // in this case here should be HMR support
+    config.output.publicPath = '/';
     config.entry.hmr = 'webpack-hot-middleware/client';
     config.plugins.push(new webpack.HotModuleReplacementPlugin());
+    webpackHtmlPluginOptions.chunks.push('hmr'); // HMR support for frontend, when on dev server
 }
 
 if (isProduction) {
     config.plugins.push(new UglifyJSWebpackPlugin({ // minify JS in production + tree shaking
         test: /\.js$/i
     }));
+
+    webpackHtmlPluginOptions.minify = { // minify HTML in production
+        collapseInlineTagWhitespace: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true,
+        removeComments: true,
+        useShortDoctype: true
+    };
+
+    config.plugins.push(new BundleAnalyzerPlugin()); // it's should help to check bundle after build
 }
+
+config.plugins.unshift(new HtmlWebpackPlugin(webpackHtmlPluginOptions));
 
 // EXPORTS
 /**

@@ -13,13 +13,13 @@ class Routes extends Module {
     async init() {
         debug('Module initialization...');
         this.application.use('/', require('../routes/index'));
-        this._webpackDevHandlers();
+        await this._webpackDevHandlers();
         this._errorsHandlers();
         debug('...module initialized.');
         return this;
     }
 
-    _webpackDevHandlers() {
+    async _webpackDevHandlers() {
         if (this.application.get('env') !== 'production') {
             // webpack imports
             const webpack = require('webpack');
@@ -27,6 +27,7 @@ class Routes extends Module {
             const WebpackHotMiddleware = require('webpack-hot-middleware');
             // load and compile webpack configuration from project root
             const webpackConfig = require('../../webpack.config');
+            debug('Frontend compilation...');
             const webpackCompiler = webpack(webpackConfig);
             // middleware apply
             const webpackDevMiddleware = WebpackDevMiddleware(webpackCompiler, {
@@ -45,6 +46,12 @@ class Routes extends Module {
             const webpackHotMiddleware = WebpackHotMiddleware(webpackCompiler);
             this.application.use(webpackDevMiddleware);
             this.application.use(webpackHotMiddleware);
+            return new Promise((resolve) => {
+                webpackDevMiddleware.waitUntilValid(() => {
+                    debug('...compiled.');
+                    resolve();
+                });
+            });
         }
     }
 
