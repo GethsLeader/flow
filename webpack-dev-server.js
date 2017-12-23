@@ -44,6 +44,7 @@ const compiler = webpack(config);
  * @type {function}
  */
 const webpackDevMiddleware = WebpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath,
     contentBase: null, // where from should to serve all other application static files
     staticOptions: {}, // additional options to serve static files right
     historyApiFallback: null, // rewrite rules, in other words what serve on each request, will serve index.html on true

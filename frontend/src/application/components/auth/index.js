@@ -21,13 +21,13 @@ class LoginForm {
 
     async login() {
         logger.debug(`[Auth] login started for "${this.username}"...`);
-        if (!this.username.trim()) {
-            throw new Error('ERROR_EMPTY_USERNAME');
-        }
-        if (!this.password) {
-            throw new Error('ERROR_EMPTY_PASSWORD');
-        }
         try {
+            if (!this.username.trim()) {
+                throw new Error('ERROR_EMPTY_USERNAME');
+            }
+            if (!this.password) {
+                throw new Error('ERROR_EMPTY_PASSWORD');
+            }
             let res = await Vue.http.post(this.url, {
                 username: this.username.trim(),
                 password: this.password
