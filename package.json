@@ -8,7 +8,7 @@
     "build": "webpack",
     "watch": "webpack --watch",
     "dev-server": "node ./webpack-dev-server.js",
-    "app-server": "node ./backend/run.js",
+    "app-server": "node --inspect ./backend/run.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

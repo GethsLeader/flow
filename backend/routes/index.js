@@ -11,6 +11,17 @@ if (process.env.NODE_ENV === 'production') {
             // be helpful.
             return res.send('MAIN PAGE PLACEHOLDER');
         });
+} else {
+    router
+        .get('/test', function (req, res) {
+            return res.send(`
+<h1>${req.url}</h1>
+<h2>SESSION:</h2>
+<p>${JSON.stringify(req.session)}</p>
+<h2>USER:</h2>
+<p>${JSON.stringify(req.user)}</p>
+`);
+        });
 }
 
 // EXPORTS
