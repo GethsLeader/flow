@@ -100,6 +100,11 @@ if (process.env.NODE_ENV === 'production') { // lets avoid case, when someone wi
     throw new Error('Cannot use webpack-dev-server in production!');
 }
 
+application.use((req, res, next) => { // initial middleware
+    res.header('X-Powered-By', 'Express + Webpack Development Server');
+    return next();
+});
+
 application.use(webpackDevMiddleware); // middleware applying
 application.use(webpackHotMiddleware);
 application.use(errorsHandler);
@@ -110,7 +115,12 @@ application.use(errorsHandler);
  */
 const devServer = http.createServer(application); // server preparing
 
-console.log(`Trying to start dev application server on port ${port} with host ${host ? host : '*'}`);
-devServer.listen(port, host, () => { // server starting
-    console.log(`Dev application server created on port ${devServer.address().port} with address ${devServer.address().address} (${devServer.address().family})`);
+// starting after compilation
+console.log('Webpack compilation started...');
+webpackDevMiddleware.waitUntilValid(() => {
+    console.log('...compiled.');
+    console.log(`Trying to start dev application server on port ${port} with host ${host ? host : '*'}`);
+    devServer.listen(port, host, () => { // server starting
+        console.log(`Dev application server created on port ${devServer.address().port} with address ${devServer.address().address} (${devServer.address().family})`);
+    });
 });

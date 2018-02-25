@@ -17,5 +17,8 @@
       "interval": "1d",
       "size": "5M"
     }
+  },
+  "static": {
+    "proxy": true
   }
 }

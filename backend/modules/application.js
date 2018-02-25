@@ -8,6 +8,8 @@ const ExpressResponse = express.response;
 
 const Logger = require('./logger');
 const Security = require('./security');
+const Static = require('./static');
+const WebpackInjection = require('./webpack-injection');
 const Routes = require('./routes');
 const Servers = require('./servers');
 
@@ -17,6 +19,8 @@ class Modules {
         debug('Modules creation...');
         this.logger = new Logger(application);
         this.security = new Security(application);
+        this.static = new Static(application);
+        this.webpackInjection = new WebpackInjection(application);
         this.routes = new Routes(application);
         this.servers = new Servers(application);
         debug('...modules created.');
@@ -59,6 +63,8 @@ class Application extends EventEmitter {
     async start() {
         await this.modules.logger.init();
         await this.modules.security.init();
+        await this.modules.static.init();
+        await this.modules.webpackInjection.init();
         await this.modules.routes.init();
         await this.modules.servers.init();
     }

@@ -69,6 +69,7 @@ const config = {
     output: {
         path: distPath,
         filename: '[name].[hash].js', // how bundled entry point will be named
+        publicPath: '/'
     },
     devtool: isDevelopment ? 'inline-source-map' : false,
     module: {
@@ -195,7 +196,6 @@ if (!isDevOrAppServer) { // no need to clean dist directory on simple build call
 }
 
 if (isDevelopment && isDevOrAppServer) { // in this case here should be HMR support
-    config.output.publicPath = '/';
     config.entry.hmr = 'webpack-hot-middleware/client';
     config.plugins.push(new webpack.HotModuleReplacementPlugin());
     webpackHtmlPluginOptions.chunks.push('hmr'); // HMR support for frontend, when on dev server
